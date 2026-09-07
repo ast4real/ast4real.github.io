@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asteway Melese — Computer Science Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #050505;
+    --bg-2: #0A0A0A;
+    --glass: rgba(255,255,255,0.035);
+    --glass-border: rgba(255,255,255,0.10);
+    --gold-1: #FFE9B0;
+    --gold-2: #E8C879;
+    --gold-3: #C79A3E;
+    --gold-4: #8A6420;
+    --silver: #D9DCE1;
+    --text: #F4F3EF;
+    --text-muted: #9A9A96;
+    --line: rgba(255,255,255,0.10);
+    --max: 1080px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection{ background: var(--gold-2); color: #0A0A08; }
+
+  h1,h2,h3{ font-family: 'Fraunces', serif; font-weight: 600; margin:0; }
+
+  a{ color: inherit; }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+  }
+  @media (max-width: 640px){ .wrap{ padding: 0 20px; } }
+
+  /* ---------- shine text ---------- */
+  .shine{
+    background: linear-gradient(100deg,
+      var(--gold-4) 0%, var(--gold-2) 18%, var(--gold-1) 32%,
+      var(--gold-2) 46%, var(--gold-4) 62%, var(--gold-3) 78%, var(--gold-1) 100%);
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shineMove 7s linear infinite;
+  }
+  @keyframes shineMove{
+    0%{ background-position: 0% 50%; }
+    100%{ background-position: 260% 50%; }
+  }
+  @media (prefers-reduced-motion: reduce){ .shine{ animation:none; background-position: 40% 50%; } }
+
+  /* ---------- background field ---------- */
+  .bg-field{
+    position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(900px 600px at 78% -10%, rgba(232,200,121,0.10), transparent 60%),
+      radial-gradient(700px 500px at 0% 30%, rgba(255,255,255,0.035), transparent 55%),
+      var(--bg);
+  }
+  .bg-field::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1.4px);
+    background-size: 3px 3px;
+    opacity: 0.025;
+  }
+  #stars{ position: fixed; inset:0; z-index:-1; pointer-events:none; }
+  .star{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background: var(--gold-1);
+    box-shadow: 0 0 4px 1px rgba(255,233,176,0.5);
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{ opacity:0.15; } 50%{ opacity:0.9; } }
+
+  /* ---------- nav ---------- */
+  header{
+    position: sticky; top:0; z-index: 20;
+    backdrop-filter: blur(14px);
+    background: rgba(5,5,5,0.7);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:18px; padding-bottom:18px;
+  }
+  .brand{
+    font-family:'Fraunces', serif; font-size: 1.05rem; font-weight:600;
+    letter-spacing: 0.01em;
+  }
+  .navlinks{ display:flex; gap: 28px; font-size: 0.9rem; }
+  .navlinks a{ text-decoration:none; color: var(--text-muted); transition: color .25s ease; position:relative; }
+  .navlinks a:hover{ color: var(--gold-1); }
+  @media (max-width: 640px){ .navlinks{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 104px 0 90px;
+    display:grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items:end;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .hero-kicker{
+    color: var(--gold-2);
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .hero h1{
+    font-size: clamp(2.8rem, 6.4vw, 5rem);
+    line-height: 1.02;
+    max-width: 12ch;
+    font-weight: 700;
+  }
+  .hero-lede{
+    margin-top: 22px;
+    max-width: 46ch;
+    color: var(--text-muted);
+    font-size: 1.08rem;
+  }
+  .hero-actions{ margin-top: 34px; display:flex; gap: 14px; flex-wrap: wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 13px 22px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.92rem;
+    border: 1px solid var(--glass-border);
+    transition: all .25s ease;
+  }
+  .btn-solid{
+    background: linear-gradient(120deg, var(--gold-3), var(--gold-1) 50%, var(--gold-3));
+    background-size: 220% 100%;
+    color:#161206; border-color: transparent; font-weight:600;
+    box-shadow: 0 0 24px -4px rgba(232,200,121,0.55);
+  }
+  .btn-solid:hover{ background-position: 100% 0; box-shadow: 0 0 36px -2px rgba(232,200,121,0.8); }
+  .btn-ghost{ background: var(--glass); color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--gold-2); color: var(--gold-1); }
+
+  .hero-card{
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 26px 24px;
+    border-radius: 6px;
+    box-shadow: 0 0 40px -18px rgba(232,200,121,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .hero-card dl{ margin:0; display:grid; grid-template-columns: auto 1fr; gap: 10px 16px; font-size: 0.9rem; }
+  .hero-card dt{ color: var(--text-muted); }
+  .hero-card dd{ margin:0; }
+  .status-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background: var(--gold-1); margin-right:8px;
+    box-shadow: 0 0 0 3px rgba(232,200,121,0.18), 0 0 8px 1px rgba(232,200,121,0.6);
+  }
+  @media (max-width: 800px){ .hero{ grid-template-columns: 1fr; } }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 88px 0; border-bottom: 1px solid var(--line); }
+  .section-head{
+    display:grid; grid-template-columns: 1fr 1.6fr; gap: 40px;
+    margin-bottom: 50px;
+  }
+  .section-head h2{ font-size: clamp(1.8rem, 3.6vw, 2.4rem); }
+  .section-head p{ color: var(--text-muted); max-width: 52ch; }
+  @media (max-width: 720px){ .section-head{ grid-template-columns: 1fr; gap: 14px; } }
+
+  /* ---------- journey ---------- */
+  .journey-path{ display:block; width:100%; height:auto; margin-bottom: 8px; }
+  .journey-path path{
+    fill:none; stroke: url(#goldline); stroke-width: 2.4;
+    stroke-dasharray: 900; stroke-dashoffset: 900;
+    animation: draw 2.4s ease forwards .2s;
+    filter: drop-shadow(0 0 6px rgba(232,200,121,0.5));
+  }
+  .journey-path circle{ fill: var(--gold-1); opacity:0; animation: pop .5s ease forwards; filter: drop-shadow(0 0 6px rgba(255,233,176,0.9)); }
+  .journey-path circle:nth-of-type(1){ animation-delay: .3s; }
+  .journey-path circle:nth-of-type(2){ animation-delay: 1.1s; }
+  .journey-path circle:nth-of-type(3){ animation-delay: 1.9s; }
+  @keyframes draw{ to{ stroke-dashoffset: 0; } }
+  @keyframes pop{ from{ opacity:0; transform: scale(0.4); } to{ opacity:1; transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce){
+    .journey-path path{ animation:none; stroke-dashoffset:0; }
+    .journey-path circle{ animation:none; opacity:1; }
+  }
+
+  .journey-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 32px; }
+  .journey-item{ border-left: 2px solid var(--glass-border); padding-left: 18px; transition: border-color .3s ease; }
+  .journey-item:hover{ border-color: var(--gold-2); }
+  .journey-item .yr{ color: var(--gold-2); font-size: 0.85rem; }
+  .journey-item h3{ font-size: 1.15rem; margin: 6px 0 6px; }
+  .journey-item p{ color: var(--text-muted); font-size: 0.94rem; margin:0; }
+  @media (max-width: 720px){ .journey-grid{ grid-template-columns: 1fr; } }
+
+  /* ---------- about ---------- */
+  .about-body p{ color: var(--text-muted); max-width: 62ch; margin: 0 0 16px; }
+  .about-body strong{ color: var(--gold-1); font-weight: 600; }
+
+  /* ---------- skills ---------- */
+  .skills-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .skill{
+    background: var(--bg-2);
+    padding: 20px 18px;
+    font-size: 0.94rem;
+    transition: background .25s ease;
+  }
+  .skill:hover{ background: #101010; }
+  .skill .level{ margin-top: 10px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow:hidden; }
+  .skill .level i{ display:block; height:100%; background: linear-gradient(90deg, var(--gold-4), var(--gold-1)); box-shadow: 0 0 8px rgba(232,200,121,0.6); }
+
+  /* ---------- projects ---------- */
+  .projects{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .project{ background: var(--bg-2); padding: 32px 28px; transition: background .3s ease, box-shadow .3s ease; position:relative; }
+  .project:hover{ background: #101010; box-shadow: inset 0 0 0 1px rgba(232,200,121,0.25); }
+  .project .tag{ color: var(--gold-2); font-size: 0.82rem; }
+  .project h3{ font-size: 1.28rem; margin: 10px 0 10px; }
+  .project p{ color: var(--text-muted); font-size: 0.94rem; margin: 0 0 16px; }
+  .project a{ font-size: 0.88rem; text-decoration: none; color: var(--gold-1); border-bottom: 1px solid rgba(232,200,121,0.4); }
+  @media (max-width: 720px){ .projects{ grid-template-columns: 1fr; } }
+
+  .note{ margin-top: 28px; font-size: 0.85rem; color: var(--text-muted); border-left: 2px solid var(--gold-2); padding-left: 14px; }
+
+  /* ---------- contact ---------- */
+  .contact{ border-bottom: none; padding-bottom: 100px; }
+  .contact-inner{ display:grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
+  .contact h2{ font-size: clamp(2.1rem, 4.8vw, 3.2rem); max-width: 12ch; }
+  .contact-links{ display:flex; flex-direction:column; gap: 14px; margin-top: 26px; }
+  .contact-links a{
+    text-decoration:none; font-size: 1.02rem; display:flex; justify-content:space-between;
+    border-bottom: 1px solid var(--line); padding-bottom: 12px;
+    transition: color .25s ease;
+  }
+  .contact-links a:hover{ color: var(--gold-1); }
+  .contact-links a span{ color: var(--text-muted); font-size: 0.85rem; }
+  @media (max-width: 720px){ .contact-inner{ grid-template-columns: 1fr; } }
+
+  footer{ padding: 26px 0 46px; text-align:center; color: var(--text-muted); font-size: 0.82rem; }
+</style>
+</head>
+<body>
+
+<div class="bg-field" aria-hidden="true"></div>
+<div id="stars" aria-hidden="true"></div>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">Asteway <span class="shine">Melese</span></div>
+    <div class="navlinks">
+      <a href="#journey">Journey</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div>
+      <div class="hero-kicker">Computer science · Class of 2027</div>
+      <h1><span class="shine">Asteway Melese</span></h1>
+      <p class="hero-lede">A computer science student building a path from Hawassa to Addis Ababa, now studying at Infolink University College — currently in year two, on track to graduate in 2027.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-solid">Get in touch</a>
+        <a href="#projects" class="btn btn-ghost">See my work</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <dl>
+        <dt><span class="status-dot"></span>Now</dt>
+        <dd>2nd year, Infolink University College</dd>
+        <dt>Studying</dt>
+        <dd>Computer Science</dd>
+        <dt>Graduating</dt>
+        <dd>2027</dd>
+        <dt>Based in</dt>
+        <dd>Ethiopia</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="journey" class="journey wrap">
+    <div class="section-head">
+      <h2>The path so far</h2>
+      <p>Three stops, one direction — from high school in Hawassa, through a first year in Addis Ababa, to where the degree will be finished.</p>
+    </div>
+
+    <svg class="journey-path" viewBox="0 0 1000 90" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="goldline" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#8A6420"/>
+          <stop offset="50%" stop-color="#FFE9B0"/>
+          <stop offset="100%" stop-color="#8A6420"/>
+        </linearGradient>
+      </defs>
+      <path d="M 40 60 C 250 10, 420 90, 500 45 S 780 5, 960 55"/>
+      <circle cx="40" cy="60" r="7"/>
+      <circle cx="500" cy="45" r="7"/>
+      <circle cx="960" cy="55" r="7"/>
+    </svg>
+
+    <div class="journey-grid">
+      <div class="journey-item">
+        <div class="yr">High school</div>
+        <h3>SOS Hermann Gmeiner, Hawassa</h3>
+        <p>Completed secondary school in Hawassa, where the interest in computing started.</p>
+      </div>
+      <div class="journey-item">
+        <div class="yr">1st year</div>
+        <h3>Addis Ababa Science &amp; Technology University</h3>
+        <p>Began university studies in Addis Ababa before continuing the degree elsewhere.</p>
+      </div>
+      <div class="journey-item">
+        <div class="yr">2nd year – 2027</div>
+        <h3>Infolink University College</h3>
+        <p>Currently a 2nd year computer science student, working toward graduation in 2027.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="wrap">
+    <div class="section-head">
+      <h2>About me</h2>
+      <p></p>
+    </div>
+    <div class="about-body">
+      <p><strong>Asteway Melese</strong> is a computer science student currently in the second year at Infolink University College, expected to graduate in 2027. The academic path started at Addis Ababa Science and Technology University for the first year, and continued at Infolink — building on a foundation from high school at SOS Hermann Gmeiner in Hawassa.</p>
+      <p>This section is a placeholder — replace it with a short paragraph in your own words about what draws you to computer science, what you're focused on right now, and where you'd like to go after graduation.</p>
+    </div>
+  </section>
+
+  <section id="skills" class="wrap">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <p>Placeholder skills below — swap these for the languages, tools, and areas you're actually building with.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill">Python<div class="level"><i style="width:70%"></i></div></div>
+      <div class="skill">Java<div class="level"><i style="width:55%"></i></div></div>
+      <div class="skill">C / C++<div class="level"><i style="width:50%"></i></div></div>
+      <div class="skill">HTML &amp; CSS<div class="level"><i style="width:65%"></i></div></div>
+      <div class="skill">JavaScript<div class="level"><i style="width:50%"></i></div></div>
+      <div class="skill">SQL &amp; Databases<div class="level"><i style="width:45%"></i></div></div>
+      <div class="skill">Data Structures<div class="level"><i style="width:60%"></i></div></div>
+      <div class="skill">Git &amp; GitHub<div class="level"><i style="width:55%"></i></div></div>
+    </div>
+  </section>
+
+  <section id="projects" class="wrap">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <p>Sample placeholders — add your real coursework, assignments, or personal projects here.</p>
+    </div>
+    <div class="projects">
+      <div class="project">
+        <div class="tag">Group project · C++</div>
+        <h3>Text-Based Adventure Game</h3>
+        <p>An interactive, story-driven console game built in C++. The player wakes up in a dark forest and makes choices — investigate the light, pick a path, fight or flee a wolf — that branch into different endings, including finding hidden treasure. Built collaboratively with a team of classmates.</p>
+        <a href="https://github.com/ast4real" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+      <div class="project">
+        <div class="tag">Coursework · C++</div>
+        <h3>Arithmetic Calculator</h3>
+        <p>A console program that takes two numbers from the user and computes their sum, difference, product, quotient, and modulus — a first look at input handling and basic operators in C++.</p>
+        <a href="https://github.com/ast4real" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+      <div class="project">
+        <div class="tag">In progress · C++</div>
+        <h3>Menu-Driven Calculator</h3>
+        <p>A work-in-progress calculator that uses a switch-case menu so the user can choose an operation — add, subtract, multiply, or divide — including basic checks to avoid dividing by zero.</p>
+        <a href="https://github.com/ast4real" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+    <p class="note">More projects live on <a href="https://github.com/ast4real" target="_blank" rel="noopener" style="color:var(--gold-1);">github.com/ast4real</a> — send me new project names and descriptions any time and I'll add them here.</p>
+  </section>
+
+  <section id="contact" class="contact wrap">
+    <div class="contact-inner">
+      <div>
+        <h2><span class="shine">Let's connect</span></h2>
+        <p style="color:var(--text-muted); margin-top:14px; max-width:44ch;">Open to opportunities, collaboration, and conversations about computer science. Reach out through any of the links below.</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:astewaymelese46@gmail.com">Email <span>astewaymelese46@gmail.com</span></a>
+        <a href="https://github.com/ast4real" target="_blank" rel="noopener">GitHub <span>github.com/ast4real</span></a>
+        <a href="#">LinkedIn <span>add your profile link</span></a>
+        <a href="#">Telegram <span>add your handle</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Asteway Melese — Computer Science, Infolink University College · Class of 2027
+</footer>
+
+<script>
+  const starField = document.getElementById('stars');
+  const starCount = window.innerWidth < 640 ? 40 : 80;
+  for(let i=0;i<starCount;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.top = Math.random()*100 + 'vh';
+    s.style.animationDelay = (Math.random()*4) + 's';
+    s.style.opacity = (Math.random()*0.6+0.2).toString();
+    starField.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
